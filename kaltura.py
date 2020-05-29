@@ -60,8 +60,11 @@ class Kaltura:
 
         for item in response.objects:
             # print(item)
-            if item.description.split("\n")[1].split(" ")[1] == uuid:
-                break
+            try:
+                if item.description.split("\n")[1].split(" ")[1] == uuid:
+                    break
+            except IndexError:
+                print("[KALTURA] item description=",item.description)
         else:
             return False
 
@@ -97,10 +100,13 @@ class Kaltura:
 
         result = self.client.media.addContent(entry_id, resource)
         try: 
-            os.remove(filename)
+            path = os.path.abspath("../ZoomToKaltura/")
+            mypath = os.path.join(path, filename)
+            os.remove(mypath)
         except PermissionError:
-            print("Failed to delete file, because of windows")
-        print(result)
+            pass
+            # print("[K|LOCAL] FILE READY TO DELETE:", filename)
+        # print(result)
 
     # def getRecordings(self):
     #     results = []

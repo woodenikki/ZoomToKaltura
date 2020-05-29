@@ -25,10 +25,10 @@ class BoomerMedia:
         self.meetingId = uuid
         self.startTime = startTime
 
-        print(self.startTime)
+        # print(self.startTime)
         if self.duration == 0:
             print(
-                f"[ZOOM] You may want to look at deleting this entry: {self.topic} - {utc_to_local(datetime.strptime(self.startTime, '%Y-%m-%dT%H:%M:%SZ'))}"
+                f"[ZOOM] Duration=0 | Look at deleting this entry: {self.topic} - {utc_to_local(datetime.strptime(self.startTime, '%Y-%m-%dT%H:%M:%SZ'))}"
             )
 
     def __str__(self):
@@ -78,7 +78,7 @@ class Boomer:
                 "Content-Type": "application/json",
             }
         )
-        print(self.token)
+        # print(self.token)
 
     def generateJWT(self):
         header = {"alg": "HS256", "typ": "JWT"}
@@ -139,14 +139,18 @@ class Boomer:
             params={"action": "trash"},
         )
 
-        recordings = response.json()["recording_files"]
-        results = []
+        try:
+            recordings = response.json()["recording_files"]
+            results = []
 
-        for d in recordings:
-            if d.get("recording_type", "") == "shared_screen_with_speaker_view":
-                results.append([d["download_url"], d["file_type"]])
+            for d in recordings:
+                if d.get("recording_type", "") == "shared_screen_with_speaker_view":
+                    results.append([d["download_url"], d["file_type"]])
 
-        return results
+            return results
+        except KeyError:
+            print("[ZOOM] Key missing", meetingId)
+            return []
 
 
 
@@ -159,11 +163,14 @@ class Boomer:
             )
 
             if response.status_code != 204:
-                raise BadStatus(
-                    f"Delete Failed: {response.status_code} - {response.text}"
-                )
+                pass
+                # raise BadStatus(
+                #    f"Delete Failed: {response.status_code} - {response.text}"
+                # )
+                # print("[ZOOM] Delete failed ******!!!!!******")
+                
 
-        print(f"Deleted meeting with id: {meetingId}")
+        print(f"[ZOOM] Deleted meeting with id: {meetingId}")
 
 def download_file(url, file_type):
     counter = 0
@@ -174,5 +181,5 @@ def download_file(url, file_type):
             for chunk in r.iter_content(chunk_size=8192): 
                 f.write(chunk)
                 counter += 1
-                # print("Write chunk", counter)
+    print("File size:", counter*8192)
     return local_filename
