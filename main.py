@@ -48,7 +48,7 @@ def main(start, end):
             continue
         if not result.email.endswith("suu.edu"):
             print("[MANUAL] email is bad. Check output.log")
-            log.write( result.email + result.topic + "," +  "," + str(result.idx) +"," + str(utc_to_local(datetime.strptime(result.startTime, '%Y-%m-%dT%H:%M:%SZ'))) + "\n")
+            log.write( result.email +  "," + result.topic + ","  + str(result.idx) +"," + str(utc_to_local(datetime.strptime(result.startTime, '%Y-%m-%dT%H:%M:%SZ'))) + "\n")
             continue
         if not kal.search(result.userName, result.topic, result.meetingId):
             print("[KALTURA] No match", result)
