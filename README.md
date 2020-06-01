@@ -29,10 +29,6 @@ To Clone this repository:
 poetry install
 ```
 
-- Set up required tools
-``` 
-poetry add setuptools 
-```
 ---
 ## Running the tests
 
