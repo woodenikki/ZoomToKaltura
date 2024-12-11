@@ -65,8 +65,8 @@ class BoomerMedia:
 
 class Boomer:
 
-    __ZOOM_API_KEY__ = "-JttzI4ZQFisloc9cMiMAw"
-    __ZOOM_API_SECRET__ = "zAUnpL3VA1Ze48NfzWEoEU0iVJf7cw1X37I4"
+    __ZOOM_API_KEY__ = "API_KEY"
+    __ZOOM_API_SECRET__ = "API_SECRET"
     __ZOOM_URL__ = "https://api.zoom.us/v2/"
 
     def __init__(self):
